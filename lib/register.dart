@@ -669,7 +669,7 @@ class _RegisterState extends State<Register> {
       return "Pincode cannot be empty";
     }
     if (!RegExp(r'^\d{6}$').hasMatch(value)) {
-      return "Pincode must be 6 digits";
+      return "Pincode must be 6 number";
     }
     return null;
   }
