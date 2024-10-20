@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-// Assuming you have StudentPage and TeacherPage widgets
-import 'student.dart'; // Import your StudentPage widget
-import 'teacher.dart'; // Import your TeacherPage widget
+// Assuming you have StudentPage and ContracterPage widgets
+import 'customer.dart'; // Import your StudentPage widget
+import 'contracter.dart'; // Import your ContracterPage widget
 
 class HomePage extends StatefulWidget {
-  final String userRole; // 'student' or 'teacher'
+  final String userRole; // 'student' or 'Contracter'
 
   const HomePage({super.key, required this.userRole});
 
@@ -21,14 +21,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _navigateBasedOnRole() {
-    if (widget.userRole == 'Student') {
+    if (widget.userRole == 'Customer') {
       // Navigate to StudentPage
       Future.microtask(() => Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Student())));
-    } else if (widget.userRole == 'Teacher') {
-      // Navigate to TeacherPage
+          context, MaterialPageRoute(builder: (context) => const Customer())));
+    } else if (widget.userRole == 'Contracter') {
+      // Navigate to ContracterPage
       Future.microtask(() => Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Teacher())));
+          context, MaterialPageRoute(builder: (context) => const Contracter())));
     }
   }
 

@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'student.dart';
-import 'teacher.dart';
+import 'package:getserved/provider.dart';
+import 'customer.dart';
+import 'contracter.dart';
 import 'register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildLoginForm(BuildContext context) {
     return Container(
-      color: Colors.orangeAccent[700],
+      color: Color.fromARGB(255, 164, 217, 232),
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.70,
       child: Center(
@@ -194,44 +195,14 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 15),
-            const Text(
-              "Made by",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 40,
-              ),
-            ),
-            const SizedBox(height: 5),
-            _buildFooterBrand(),
+           
           ],
         ),
       ),
     );
   }
 
-  Widget _buildFooterBrand() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          "WEB",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
-            color: Colors.blue[900],
-          ),
-        ),
-        Text(
-          "FUN",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
-            color: Colors.yellowAccent[400],
-          ),
-        ),
-      ],
-    );
-  }
+  
 
   Future<void> signIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
@@ -260,12 +231,17 @@ class _LoginPageState extends State<LoginPage> {
 
       if (documentSnapshot.exists) {
         String role = documentSnapshot.get('role');
-        if (role == "Teacher") {
+        if (role == "Contracter") {
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const Teacher()));
-        } else {
+              MaterialPageRoute(builder: (context) => const Contracter()));
+        }else if(role== "Provider"){
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const Student()));
+              MaterialPageRoute(builder: (context) => const Provider()));
+
+        }
+         else {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const Customer()));
         }
       }
     }

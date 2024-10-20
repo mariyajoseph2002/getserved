@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 
 import 'login.dart';
 
-class Teacher extends StatefulWidget {
-  const Teacher({super.key});
+class Customer extends StatefulWidget {
+  const Customer({super.key});
 
   @override
-  State<Teacher> createState() => _TeacherState();
+  State<Customer> createState() => _CustomerState();
 }
 
-class _TeacherState extends State<Teacher> {
+class _CustomerState extends State<Customer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Teacher"),
+        title: const Text("Customer"),
         actions: [
           IconButton(
             onPressed: () {

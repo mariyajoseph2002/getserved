@@ -24,8 +24,8 @@
 //   final TextEditingController confirmPasswordController =
 //       TextEditingController();
 
-//   List<String> roles = ['Student', 'Teacher'];
-//   String selectedRole = 'Student';
+//   List<String> roles = ['Customer', 'Contracter'];
+//   String selectedRole = 'Customer';
 
 //   @override
 //   void dispose() {
@@ -335,8 +335,8 @@ class _RegisterState extends State<Register> {
   final TextEditingController pincodeController = TextEditingController();
   final TextEditingController ageController = TextEditingController();
 
-  List<String> roles = ['Student', 'Teacher'];
-  String selectedRole = 'Student';
+  List<String> roles = ['Customer', 'Contracter',];
+  String selectedRole = 'Customer';
   String selectedGender = 'Male'; // Default gender
 
   @override
@@ -354,13 +354,13 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orange[900],
+      backgroundColor: Color.fromARGB(255, 164, 229, 239),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
-                color: Colors.orangeAccent[700],
+                color: Color.fromARGB(255, 164, 223, 226),
                 width: MediaQuery.of(context).size.width,
                 child: Padding(
                   padding: const EdgeInsets.all(12),
@@ -435,7 +435,7 @@ class _RegisterState extends State<Register> {
                         const SizedBox(height: 20),
                         _buildActionButtons(),
                         const SizedBox(height: 20),
-                        _buildFooter(),
+                       
                       ],
                     ),
                   ),
@@ -612,16 +612,7 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  Widget _buildFooter() {
-    return Text(
-      "WEBFUN",
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 30,
-        color: Colors.yellowAccent[400],
-      ),
-    );
-  }
+ 
 
   String? _validateName(String? value) {
     if (value!.isEmpty) {
