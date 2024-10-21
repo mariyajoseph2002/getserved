@@ -38,7 +38,9 @@ class MainPage extends StatelessWidget {
                 if (snapshot.hasError ||
                     !snapshot.hasData ||
                     snapshot.data == null) {
-                  return const Center(child: Text("Error loading user role"));
+                  //return const Center(child: Text("Error loading user role"));
+                  return const LoginPage();
+                  
                 }
 
                 String userRole = snapshot.data!;

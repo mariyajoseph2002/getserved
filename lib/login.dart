@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'admin.dart';
 import 'package:getserved/provider.dart';
 import 'customer.dart';
 import 'contracter.dart';
+
 import 'register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -234,9 +236,14 @@ class _LoginPageState extends State<LoginPage> {
         if (role == "Contracter") {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const Contracter()));
-        }else if(role== "Provider"){
+        }else if(role== "provider"){
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const Provider()));
+
+        }
+        else if(role== "Admin"){
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const Admin()));
 
         }
          else {

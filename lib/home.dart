@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:getserved/provider.dart';
+//import 'package:getserved/admin.dart';
 
 // Assuming you have StudentPage and ContracterPage widgets
 import 'customer.dart'; // Import your StudentPage widget
 import 'contracter.dart'; // Import your ContracterPage widget
+import 'admin.dart';
 
 class HomePage extends StatefulWidget {
   final String userRole; // 'student' or 'Contracter'
@@ -25,10 +28,21 @@ class _HomePageState extends State<HomePage> {
       // Navigate to StudentPage
       Future.microtask(() => Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const Customer())));
-    } else if (widget.userRole == 'Contracter') {
+    }
+     else if (widget.userRole == 'Contracter') {
       // Navigate to ContracterPage
       Future.microtask(() => Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const Contracter())));
+    }
+     else if (widget.userRole == 'provider') {
+      // Navigate to ContracterPage
+      Future.microtask(() => Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const Provider())));
+    }
+    else if (widget.userRole == 'Admin') {
+      // Navigate to ContracterPage
+      Future.microtask(() => Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const Admin())));
     }
   }
 
