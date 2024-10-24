@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'login.dart';
+import 'booking_page.dart'; // Import the booking page
 
 class Customer extends StatefulWidget {
   const Customer({super.key});
@@ -12,21 +13,19 @@ class Customer extends StatefulWidget {
 }
 
 class _CustomerState extends State<Customer> {
-  String? _selectedServiceType; // Holds the selected service type
-  List<String> _serviceTypes = []; // List of service types
+  String? _selectedServiceType;
+  List<String> _serviceTypes = [];
   bool _isLoading = false;
-
-  // List to hold service providers fetched from Firestore
   List<DocumentSnapshot> _serviceProviders = [];
+  int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _fetchServiceTypes(); // Fetch distinct service types on page load
-    _fetchProviders(); // Fetch all service providers by default
+    _fetchServiceTypes();
+    _fetchProviders();
   }
 
-  // Fetch distinct service types from Firestore
   Future<void> _fetchServiceTypes() async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('users')
@@ -43,7 +42,6 @@ class _CustomerState extends State<Customer> {
     });
   }
 
-  // Fetch service providers, filtered by service type if selected
   Future<void> _fetchProviders() async {
     setState(() {
       _isLoading = true;
@@ -53,12 +51,10 @@ class _CustomerState extends State<Customer> {
         .collection('users')
         .where('role', isEqualTo: 'provider');
 
-    // If a service type is selected, apply the filter
     if (_selectedServiceType != null && _selectedServiceType!.isNotEmpty) {
       query = query.where('serviceType', isEqualTo: _selectedServiceType);
     }
 
-    // Fetch the results from Firestore
     QuerySnapshot querySnapshot = await query.get();
 
     setState(() {
@@ -77,11 +73,23 @@ class _CustomerState extends State<Customer> {
     );
   }
 
+  void _onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<Widget> _screens = [
+      _buildCustomerHomePage(),
+      const PreviousOrders(),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Customer"),
+        backgroundColor: Colors.teal,
         actions: [
           IconButton(
             onPressed: () {
@@ -91,19 +99,37 @@ class _CustomerState extends State<Customer> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          _buildServiceTypeFilter(),
-          const SizedBox(height: 16),
-          _buildSearchButton(),
-          const SizedBox(height: 16),
-          Expanded(child: _buildServiceProviderList()),
+      body: _screens[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.teal,
+        currentIndex: _currentIndex,
+        onTap: _onTabTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: "Previous Bookings",
+          ),
         ],
       ),
     );
   }
 
-  // Build service type dropdown filter
+  Widget _buildCustomerHomePage() {
+    return Column(
+      children: [
+        _buildServiceTypeFilter(),
+        const SizedBox(height: 16),
+        _buildSearchButton(),
+        const SizedBox(height: 16),
+        Expanded(child: _buildServiceProviderList()),
+      ],
+    );
+  }
+
   Widget _buildServiceTypeFilter() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -128,7 +154,6 @@ class _CustomerState extends State<Customer> {
     );
   }
 
-  // Build search button
   Widget _buildSearchButton() {
     return ElevatedButton(
       onPressed: _fetchProviders,
@@ -136,7 +161,6 @@ class _CustomerState extends State<Customer> {
     );
   }
 
-  // Build service provider list
   Widget _buildServiceProviderList() {
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -162,14 +186,37 @@ class _CustomerState extends State<Customer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Service Type: ${provider['serviceType']}"),
-                Text("Charge: \$${provider['charge']}"),
+                Text("Charge: Rs.${provider['charge']}"),
                 Text("Email: ${provider['email']}"),
                 Text("Gender: ${provider['gender']}"),
               ],
             ),
+            onTap: () {
+              // Navigate to the booking page with provider details
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BookingPage(provider: provider),
+                ),
+              );
+            },
           ),
         );
       },
+    );
+  }
+}
+
+class PreviousOrders extends StatelessWidget {
+  const PreviousOrders({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        "Previous Orders will be displayed here.",
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }

@@ -18,6 +18,7 @@ class _AddProviderState extends State<AddProvider> {
   final TextEditingController _serviceTypeController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
   String? _gender;
   bool _isLoading = false;
@@ -47,13 +48,15 @@ class _AddProviderState extends State<AddProvider> {
                 const SizedBox(height: 16),
                 _buildGenderSelector(),
                 const SizedBox(height: 16),
-                _buildTextField(_chargeController, "Charge (in \$)", isNumber: true),
+                _buildTextField(_chargeController, "Charge (in Rs.)", isNumber: true),
                 const SizedBox(height: 16),
                 _buildTextField(_serviceTypeController, "Service Type"),
                 const SizedBox(height: 16),
                 _buildTextField(_emailController, "Email", isEmail: true),
                 const SizedBox(height: 16),
                 _buildTextField(_passwordController, "Password", isPassword: true),
+                const SizedBox(height: 20),
+                 _buildTextField(_phoneController, "Phone no", isNumber: true),
                 const SizedBox(height: 20),
                 _buildSubmitButton(),
                 if (_isLoading)
@@ -116,7 +119,15 @@ class _AddProviderState extends State<AddProvider> {
       },
     );
   }
-
+String? _validatePhone(String? value) {
+    if (value!.isEmpty) {
+      return "Phone number cannot be empty";
+    }
+    if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+      return "Phone number must be 10 digits";
+    }
+    return null;
+  }
   Widget _buildSubmitButton() {
     return ElevatedButton(
       onPressed: _isLoading ? null : _submit,
@@ -174,6 +185,7 @@ class _AddProviderState extends State<AddProvider> {
     _serviceTypeController.clear();
     _emailController.clear();
     _passwordController.clear();
+    _phoneController.clear();
     setState(() {
       _gender = null;
     });
