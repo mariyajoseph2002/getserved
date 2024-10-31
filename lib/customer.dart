@@ -1,10 +1,12 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'login.dart';
-import 'booking_page.dart'; // Import the booking page
-
+import 'booking_page.dart';
+import 'previousorders.dart';
 class Customer extends StatefulWidget {
   const Customer({super.key});
 
@@ -77,15 +79,17 @@ class _CustomerState extends State<Customer> {
     setState(() {
       _currentIndex = index;
     });
+    if (index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const PreviousOrders()
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _screens = [
-      _buildCustomerHomePage(),
-      const PreviousOrders(),
-    ];
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Customer"),
@@ -99,7 +103,7 @@ class _CustomerState extends State<Customer> {
           )
         ],
       ),
-      body: _screens[_currentIndex],
+      body: _buildCustomerHomePage(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.teal,
         currentIndex: _currentIndex,
@@ -192,7 +196,6 @@ class _CustomerState extends State<Customer> {
               ],
             ),
             onTap: () {
-              // Navigate to the booking page with provider details
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -207,16 +210,3 @@ class _CustomerState extends State<Customer> {
   }
 }
 
-class PreviousOrders extends StatelessWidget {
-  const PreviousOrders({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Previous Orders will be displayed here.",
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
