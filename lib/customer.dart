@@ -93,7 +93,7 @@ class _CustomerState extends State<Customer> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Customer"),
-        backgroundColor: Colors.teal,
+        backgroundColor:  Color.fromARGB(255, 243, 173, 103),
         actions: [
           IconButton(
             onPressed: () {
@@ -105,7 +105,7 @@ class _CustomerState extends State<Customer> {
       ),
       body: _buildCustomerHomePage(),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.teal,
+        backgroundColor:  Color.fromARGB(255, 243, 173, 103),
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
         items: const [
@@ -180,6 +180,7 @@ class _CustomerState extends State<Customer> {
         DocumentSnapshot provider = _serviceProviders[index];
 
         return Card(
+          color:  Color.fromARGB(255, 219, 194, 113),
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: ListTile(
             title: Text(
@@ -190,9 +191,10 @@ class _CustomerState extends State<Customer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Service Type: ${provider['serviceType']}"),
-                Text("Charge: Rs.${provider['charge']}"),
+                Text("Charge: Rs.${provider['charge']}/hour"),
                 Text("Email: ${provider['email']}"),
                 Text("Gender: ${provider['gender']}"),
+              
               ],
             ),
             onTap: () {

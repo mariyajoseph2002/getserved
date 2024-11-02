@@ -39,7 +39,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Provide Feedback"),
-        backgroundColor: Colors.teal,
+        backgroundColor:  Color.fromARGB(255, 243, 173, 103),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -84,7 +84,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
               onPressed: _submitFeedback,
               child: const Text("Submit Feedback"),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal,
+                backgroundColor:  Color.fromARGB(255, 243, 173, 103),
               ),
             ),
           ],

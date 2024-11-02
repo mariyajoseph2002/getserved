@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login.dart';
-import 'reviews_ratings.dart'; // Assume this page exists for displaying reviews and ratings
+import 'reviews_ratings.dart';
+import 'edit_provider.dart'; // Import the edit provider page
 
 class Provider extends StatefulWidget {
   const Provider({super.key});
@@ -12,14 +13,14 @@ class Provider extends StatefulWidget {
 }
 
 class _ProviderState extends State<Provider> {
-  User? user = FirebaseAuth.instance.currentUser; // Current logged-in user
+  User? user = FirebaseAuth.instance.currentUser;
   String? providerEmail;
-  int _selectedIndex = 0; // Index for bottom navigation
+  int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    providerEmail = user?.email; // Fetch provider's email
+    providerEmail = user?.email;
   }
 
   @override
@@ -30,16 +31,25 @@ class _ProviderState extends State<Provider> {
         title: const Text("Provider"),
         actions: [
           IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const EditProviderPage()),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
             onPressed: () {
               logout(context);
             },
-            icon: const Icon(Icons.logout),
-          )
+          ),
         ],
       ),
       body: providerEmail == null
           ? const Center(child: CircularProgressIndicator())
-          : bookingDetails(), // Load booking details by provider email
+          : bookingDetails(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
@@ -67,7 +77,6 @@ class _ProviderState extends State<Provider> {
     );
   }
 
-  // Widget to display the booking details
   Widget bookingDetails() {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
@@ -90,9 +99,9 @@ class _ProviderState extends State<Provider> {
             var booking = bookings[index];
             DateTime? date;
             try {
-              date = (booking['date'] as Timestamp).toDate(); // Convert Timestamp to DateTime
+              date = (booking['date'] as Timestamp).toDate();
             } catch (e) {
-              date = null; // In case of any error, set date to null
+              date = null;
             }
 
             return Card(
@@ -104,10 +113,11 @@ class _ProviderState extends State<Provider> {
                   children: [
                     Text('Booking ID: ${booking.id}'),
                     const SizedBox(height: 8),
-                    Text('Date: ${date != null ? date.toLocal().toString().split(' ')[0] : 'No date available'}'), // Display date if available
+                    Text('Date: ${date != null ? date.toLocal().toString().split(' ')[0] : 'No date available'}'),
                     Text('Slot: ${booking['slot']}'),
                     Text('Customer Phone: ${booking['customerPhone']}'),
                     Text('Customer City: ${booking['customerCity']}'),
+                    Text('Remarks: ${booking['remarks']}'),
                     const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

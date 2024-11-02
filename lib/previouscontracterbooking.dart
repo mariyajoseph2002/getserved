@@ -1,25 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'feedback_page.dart'; // Import the feedback page
-import 'customer.dart'; // Import the customer page
 
-class PreviousOrders extends StatefulWidget {
-  const PreviousOrders({super.key});
+import 'contracter.dart'; // Import the customer page
+import 'feedback_page.dart'; // Import the Feedback page
+
+class PreviousContracterBooking extends StatefulWidget {
+  const PreviousContracterBooking({super.key});
 
   @override
-  _PreviousOrdersState createState() => _PreviousOrdersState();
+  _PreviouscontracterbookingState createState() => _PreviouscontracterbookingState();
 }
 
-class _PreviousOrdersState extends State<PreviousOrders> {
-  int _selectedIndex = 1; // Set the initial index to 1 (Previous Orders)
+class _PreviouscontracterbookingState extends State<PreviousContracterBooking> {
+  int _selectedIndex = 1; // Set the initial index to 1 (Previous ContracterBookingPreviouscontracterbooking)
 
   void _onItemTapped(int index) {
     if (index == 0) {
-      // Navigate to the Home (Customer) page
+      // Navigate to the Home (Contractor) page
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Customer()),
+        MaterialPageRoute(builder: (context) => const Contracter()),
       );
     }
     setState(() {
@@ -34,12 +35,12 @@ class _PreviousOrdersState extends State<PreviousOrders> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Previous Orders"),
-        backgroundColor:  Color.fromARGB(255, 243, 173, 103),
+        backgroundColor: const Color.fromARGB(255, 243, 173, 103),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('bookings')
-            .where('customerEmail', isEqualTo: user?.email)
+            .where('customerEmail', isEqualTo: user?.email) // Filter by the logged-in contractor's email
             .where('status', isEqualTo: 'done') // Filter by status 'done'
             .snapshots(),
         builder: (context, snapshot) {
@@ -56,7 +57,8 @@ class _PreviousOrdersState extends State<PreviousOrders> {
             itemCount: orders.length,
             itemBuilder: (context, index) {
               var order = orders[index];
-              DateTime date = (order['date'] as Timestamp).toDate();
+              DateTime startDate = (order['startDate'] as Timestamp).toDate();
+              DateTime endDate = (order['endDate'] as Timestamp).toDate();
 
               return Card(
                 margin: const EdgeInsets.all(8.0),
@@ -66,7 +68,8 @@ class _PreviousOrdersState extends State<PreviousOrders> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Provider: ${order['providerEmail']}'),
-                      Text('Date: ${date.toLocal()}'.split(' ')[0]),
+                      Text('Start Date: ${startDate.toLocal()}'.split(' ')[0]),
+                      Text('End Date: ${endDate.toLocal()}'.split(' ')[0]),
                     ],
                   ),
                   trailing: ElevatedButton(
@@ -101,7 +104,7 @@ class _PreviousOrdersState extends State<PreviousOrders> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor:  Color.fromARGB(255, 142, 142, 142),
+        selectedItemColor: const Color.fromARGB(255, 142, 142, 142),
         onTap: _onItemTapped,
       ),
     );

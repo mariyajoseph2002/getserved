@@ -158,6 +158,7 @@ String? _validatePhone(String? value) {
           'serviceType': _serviceTypeController.text.trim(),
           'email': _emailController.text.trim(),
           'role':'provider',
+          'phone':_phoneController.text.trim(),
           'uid': userCredential.user!.uid, // Store user UID
         });
 
